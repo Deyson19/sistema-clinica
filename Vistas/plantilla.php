@@ -49,7 +49,11 @@ session_start();
 
         include "modulos/cabecera.php";
 
-        include "modulos/menu.php";
+        if ($_SESSION["rol"] == "Secretaria") {
+            
+            include "modulos/menuSecretaria.php";
+        }
+
 
         $url = array();
 
@@ -57,7 +61,8 @@ session_start();
 
             $url = explode("/", $_GET["url"]);
 
-            if ($url[0] == "inicio"  || $url[0] == "salir" || $url[0] == "perfil-Secretaria" || $url[0] == "perfil-S") {
+            if ($url[0] == "inicio"  || $url[0] == "salir" || $url[0] == "perfil-Secretaria" 
+            || $url[0] == "perfil-S" || $url[0] == "consultorios" || $url[0] == "E-C") {
                 
                 include "modulos/" . $url[0] . ".php";
 

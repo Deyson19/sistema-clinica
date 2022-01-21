@@ -25,6 +25,13 @@ session_start();
        folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="http://localhost/clinica/Vistas/dist/css/skins/_all-skins.min.css">
 
+    <!-- DataTables -->
+    <link rel="stylesheet" href="http://localhost/clinica/Vistas/bower_components/dataTables/dataTable.css">
+    <link rel="stylesheet" href="http://localhost/clinica/Vistas/bower_components/dataTables/JQuery.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+
+    
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -115,6 +122,14 @@ session_start();
     <script src="http://localhost/clinica/Vistas/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="http://localhost/clinica/Vistas/dist/js/demo.js"></script>
+    
+    <!-- Archivos propios para JS -->
+    <script src="http://localhost/clinica/Vistas/js/doctores.js"></script>
+
+    <script src="http://localhost/clinica/Vistas/bower_components/dataTables/Jquery.js"></script>
+    <script src="http://localhost/clinica/Vistas/bower_components/dataTables/dataTablet.js"></script>
+    
+
     <script>
         $(document).ready(function() {
             $('.sidebar-menu').tree()

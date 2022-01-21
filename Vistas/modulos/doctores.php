@@ -11,10 +11,12 @@ if ($_SESSION["rol"] != "Secretaria") {
 ?>
 
 
+
 <div class="content-wrapper">
     <section class="content-header">
         <h1>Gestor de Doctores</h1>
     </section>
+
 
     <section class="content">
 
@@ -22,14 +24,16 @@ if ($_SESSION["rol"] != "Secretaria") {
 
             <div class="box-header">
 
-                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#CrearDoctor">Crear Doctor</button>
+                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#CrearDoctor">Crear
+                    Doctor</button>
 
 
             </div>
 
             <div class="box-body">
+                
 
-                <table class="table table-bordered table-hover table-striped">
+                <table class="table table-bordered table-hover table-striped DT">
                     <thead>
                         <tr>
                             <th>N°</th>
@@ -43,31 +47,44 @@ if ($_SESSION["rol"] != "Secretaria") {
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- <?php
-                                $columna = null;
-                                $valor = null;
+                        <?php
+                        $columna = null;
+                        $valor = null;
 
-                                $resultado = ConsultoriosC::VerConsultoriosC($columna, $valor);
+                        $resultado = DoctoresC::VerDoctoresC($columna, $valor);
 
 
-                                foreach ($resultado as $key => $value) {
-                                    echo '<tr>
+                        foreach ($resultado as $key => $value) {
+                            echo '<tr>
                         <td>' . ($key + 1) . '</td>
-                        <td>' . $value["nombre"] . '</td>
+                        <td>' . $value["apellido"] . '</td>
+                        <td>' . $value["nombre"] . '</td>';
+
+                            if ($value["foto"] == "") {
+                                echo '<td> <img src="Vistas/img/defecto.png" width="40px"> </td>';
+                            } else {
+                                echo '<td> <img src=" ' . $value["foto"] . ' " width="40px"> </td>';
+                            }
+
+                            $columna = "id";
+                            $valor = $value["id_consultorio"];
+
+                            $consultorio = ConsultoriosC::VerConsultoriosC($columna, $valor);
+
+                            echo '<td>' . $consultorio["nombre"] . '</td>
+                        <td>' . $value["usuario"] . '</td>
+                        <td>' . $value["clave"] . '</td>
+
                         <td>
-                            <div class="btn-group">
-                                <a href="http://localhost/clinica/E-C/' . $value["id"] . '">
-                                    <button class="btn btn-success"> <i class="fa fa-pencil"></i> Editar</button>
-                                </a>
-                                <a href="http://localhost/clinica/consultorios/' . $value["id"] . '">
-                                    <button class="btn btn-danger"> <i class="fa fa-times"></i> Borrar</button>
-                                </a>
+                            <div class="btn-group">                                
+                                    <button class="btn btn-success EditarDoctor" Did="' . $value["id"] . '" data-toggle="modal" data-target="#EditarDoctor"> <i class="fa fa-pencil"></i> Editar</button>                                                                
+                                    <button class="btn btn-danger EliminarDoctor"  Did="' . $value["id"] . '"  imgD="' . $value["foto"] . '" data-toggle="modal" data-target="#BorrarDoctor"> <i class="fa fa-times"></i> Borrar</button>                                
 
                             </div>
                         </td>
                     </tr>';
-                                }
-                                ?> -->
+                        }
+                        ?>
 
                     </tbody>
                 </table>
@@ -118,10 +135,20 @@ if ($_SESSION["rol"] != "Secretaria") {
                         <div class="form-group">
 
                             <h2>Consultorio:</h2>
-                            <select name="sexo" class="form-control input-lg">
+                            <select class="form-control input-lg" name="consultorio">
                                 <option>Seleccionar...</option>
-                                <option value="Cardiología">Cardiología</option>
-                                <option value="Psicología">Psicología</option>
+
+                                <?php
+                                $columna = null;
+                                $valor = $columna;
+                                $resultado = ConsultoriosC::VerConsultoriosC($columna, $valor);
+
+                                foreach ($resultado as $key => $value) {
+                                    echo '<option value="' . $value["id"] . '">' . $value["nombre"] . '</option>';
+                                }
+
+                                ?>
+
                             </select>
 
                         </div>
@@ -152,6 +179,93 @@ if ($_SESSION["rol"] != "Secretaria") {
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                     <button type="reset" class="btn btn-warning">Limpiar</button>
                 </div>
+
+                <?php
+                $crear = new DoctoresC();
+                $crear->CrearDoctorC();
+
+                ?>
+            </form>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+<div class="modal fade" role="dialog" id="EditarDoctor">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form method="post" role="form">
+
+                <div class="modal-body">
+
+                    <div class="box-body">
+
+                        <div class="form-group">
+
+                            <h2>Apellido:</h2>
+                            <input type="text" class="form-control input-lg" id="apellidoE" name="apellidoE" required>
+                            <input type="hidden" id="Did" name="Did">
+
+                        </div>
+                        <div class="form-group">
+
+                            <h2>Nombre:</h2>
+                            <input type="text" class="form-control input-lg" id="nombreE" name="nombreE" required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <h2>Sexo:</h2>
+                            <select name="sexoE" class="form-control input-lg" required>
+                                <option id="sexoE"></option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Femenino">Femenino</option>
+                            </select>
+
+                        </div>
+
+
+
+
+                        <div class="form-group">
+
+                            <h2>Usuario:</h2>
+                            <input type="text" class="form-control input-lg" id="usuarioE" name="usuarioE" required>
+
+                        </div>
+                        <div class="form-group">
+
+                            <h2>Contraseña:</h2>
+                            <input type="text" class="form-control input-lg" id="claveE" name="claveE" required>
+
+                        </div>
+
+
+
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="reset" class="btn btn-warning">Limpiar</button>
+                </div>
+
+                <?php
+                $actualizar = new DoctoresC();
+                $actualizar->ActualizarDoctorC();
+
+                ?>
             </form>
         </div>
 
@@ -164,7 +278,8 @@ if ($_SESSION["rol"] != "Secretaria") {
 
 <?php
 
-// $borrarC = new ConsultoriosC();
-// $borrarC -> BorrarConsultorioC();
+$borrarD = new DoctoresC();
+$borrarD->BorrarDoctorC();
 
 ?>
+

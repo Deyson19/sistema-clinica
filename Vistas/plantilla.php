@@ -69,7 +69,7 @@ session_start();
             $url = explode("/", $_GET["url"]);
 
             if ($url[0] == "inicio"  || $url[0] == "salir" || $url[0] == "perfil-Secretaria" 
-            || $url[0] == "perfil-S" || $url[0] == "consultorios" || $url[0] == "E-C"|| $url[0] == "doctores") {
+            || $url[0] == "perfil-S" || $url[0] == "consultorios" || $url[0] == "E-C"|| $url[0] == "doctores"|| $url[0] == "pacientes") {
                 
                 include "modulos/" . $url[0] . ".php";
 
@@ -125,6 +125,7 @@ session_start();
     
     <!-- Archivos propios para JS -->
     <script src="http://localhost/clinica/Vistas/js/doctores.js"></script>
+    <script src="http://localhost/clinica/Vistas/js/pacientes.js"></script>
 
     <script src="http://localhost/clinica/Vistas/bower_components/dataTables/Jquery.js"></script>
     <script src="http://localhost/clinica/Vistas/bower_components/dataTables/dataTablet.js"></script>

@@ -16,7 +16,8 @@ session_start();
     <!-- Bootstrap 3.3.7 -->
     <link rel="stylesheet" href="http://localhost/clinica/Vistas/bower_components/bootstrap/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="http://localhost/clinica/Vistas/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet"
+        href="http://localhost/clinica/Vistas/bower_components/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="http://localhost/clinica/Vistas/bower_components/Ionicons/css/ionicons.min.css">
     <!-- Theme style -->
@@ -30,7 +31,14 @@ session_start();
     <link rel="stylesheet" href="http://localhost/clinica/Vistas/bower_components/dataTables/JQuery.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 
-    
+    <!-- fullCalendar -->
+    <link rel="stylesheet"
+        href="http://localhost/clinica/Vistas/bower_components/fullcalendar/dist/fullcalendar.min.css">
+    <link rel="stylesheet"
+        href="http://localhost/clinica/Vistas/bower_components/fullcalendar/dist/fullcalendar.print.min.css"
+        media="print">
+
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,7 +48,8 @@ session_start();
   <![endif]-->
 
     <!-- Google Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini login-page">
@@ -74,7 +83,8 @@ session_start();
             if ($url[0] == "inicio"  || $url[0] == "salir" || $url[0] == "perfil-Secretaria" 
             || $url[0] == "perfil-S" || $url[0] == "consultorios" || $url[0] == "E-C"
             || $url[0] == "doctores"|| $url[0] == "pacientes" || $url[0] == "perfil-Paciente"
-            || $url[0] == "perfil-P") {
+            || $url[0] == "perfil-P"|| $url[0] == "Ver-consultorios" 
+            || $url[0]=="Doctor") {
                 
                 include "modulos/" . $url[0] . ".php";
 
@@ -131,18 +141,66 @@ session_start();
     <script src="http://localhost/clinica/Vistas/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="http://localhost/clinica/Vistas/dist/js/demo.js"></script>
-    
+
     <!-- Archivos propios para JS -->
     <script src="http://localhost/clinica/Vistas/js/doctores.js"></script>
     <script src="http://localhost/clinica/Vistas/js/pacientes.js"></script>
 
     <script src="http://localhost/clinica/Vistas/bower_components/dataTables/Jquery.js"></script>
     <script src="http://localhost/clinica/Vistas/bower_components/dataTables/dataTablet.js"></script>
-    
+
+
+    <!-- fullCalendar -->
+    <script src="http://localhost/clinica/Vistas/bower_components/moment/moment.js"></script>
+    <script src="http://localhost/clinica/Vistas/bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+    <script src="http://localhost/clinica/Vistas/bower_components/fullcalendar/dist/locale/es.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('.sidebar-menu').tree()
+    $(document).ready(function() {
+        $('.sidebar-menu').tree()
+    })
+     //Date for the calendar events (dummy data)
+     var date = new Date()
+    var d    = date.getDate(),
+        m    = date.getMonth(),
+        y    = date.getFullYear()
+
+        $("#calendar").fullCalendar({
+
+            hiddenDays: [0,6],
+            defaultView: 'agendaWeek',
+
+            dayClick:function(date,jsEvent,view){
+                $('#CitaModal').modal();
+                var fecha = date.format();
+                var hora2 = ("01:00:00").split("-");
+
+                fecha = fecha.split("T");
+
+                var dia = fecha[0];
+
+                var hora = (fecha[1].split(":"));
+
+                //Capturar la hora que se muestra
+                var hora_horaEntera = parseFloat(hora[0]);
+                //Capturar los minutos de las horas que se muestra
+                var hora_minutos = parseFloat(hora2[0]);
+
+                var hora_final = hora_horaEntera+hora_minutos;
+
+
+                //Imprimir la fecha  en un input con el id = fechaC
+                $("#fechaC").val(dia);
+
+                //Imprimir la hora en un input con el id = horaC
+                $("#horaC").val(hora_horaEntera+":00:00");
+
+                $('#fyhIC').val(fecha[0]+" "+hora_horaEntera+":00:00");
+
+                $('#fyhFC').val(fecha[0]+" "+hora_final+":00:00");
+                
+            }
+
         })
     </script>
 </body>

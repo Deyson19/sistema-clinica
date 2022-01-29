@@ -84,7 +84,7 @@ session_start();
             || $url[0] == "perfil-S" || $url[0] == "consultorios" || $url[0] == "E-C"
             || $url[0] == "doctores"|| $url[0] == "pacientes" || $url[0] == "perfil-Paciente"
             || $url[0] == "perfil-P"|| $url[0] == "Ver-consultorios" 
-            || $url[0]=="Doctor") {
+            || $url[0]=="Doctor"|| $url[0]=="historial") {
                 
                 include "modulos/" . $url[0] . ".php";
 
@@ -169,6 +169,24 @@ session_start();
 
             hiddenDays: [0,6],
             defaultView: 'agendaWeek',
+            events:[
+                <?php 
+                $resultado = CitasC::VerCitasC();
+
+                foreach ($resultado as $key => $value) {
+                    
+                    if ($value["id_doctor"] == substr($_GET["url"], 7)) {
+                        echo '{
+                            id:'.$value["id"].',
+                            title:"'.$value["nyaP"].'",
+                            start:"'.$value["inicio"].'",
+                            end:"'.$value["fin"].'"
+                        }';
+                    }
+                }
+
+                ?>
+            ],
 
             dayClick:function(date,jsEvent,view){
                 $('#CitaModal').modal();

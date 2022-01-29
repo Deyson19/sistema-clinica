@@ -99,8 +99,6 @@ if ($_SESSION["rol"] != "Paciente") {
 
                         ?>
 
-
-
                         <div class="form-group">
                             <h2>Fecha de la cita:</h2>
                             <input type="text" class="form-control input-lg" id="fechaC" name="fechaC" readonly>
@@ -124,6 +122,11 @@ if ($_SESSION["rol"] != "Paciente") {
                     <button type="button" class="btn btn-danger">Cancelar</button>
                 </div>
 
+
+                <?php 
+                $enviar = new CitasC();
+                $enviar ->EnviarCitaC();
+                ?>
             </form>
 
         </div>

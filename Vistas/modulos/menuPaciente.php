@@ -15,7 +15,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="http://localhost/clinica/historial">
+                        <?php 
+                        echo '<a href="http://localhost/clinica/historial/'.$_SESSION["id"].' ">'
+                        ?>
                             <i class="fa fa-calendar-check-o"></i>
                             <span>Historial</span>
                         </a>

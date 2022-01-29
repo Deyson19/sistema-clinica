@@ -41,8 +41,8 @@ if ($_SESSION["rol"] != "Paciente") {
                             $doctores = DoctoresC::VerDoctoresC($columna,$valor);
 
                             foreach ($doctores as $key => $value) {
-
-                                echo '<a href="Doctor/'.$value["id"].'" style="color: black;" >' .$value["apellido"]. '  ' .$value["nombre"]. '</i></a>';
+                                print '<i class="fa fa-user-md" style="color:#FFBF40; font-size:20px"></i>';
+                                echo '<a href="Doctor/'.$value["id"].'" style="color: black; font-size:15px;" >' .$value["apellido"]. '  ' .$value["nombre"]. '</i></a>';
                                 echo "<br>";
                                 
                             }

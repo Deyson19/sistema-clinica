@@ -71,6 +71,9 @@ session_start();
         }elseif($_SESSION["rol"] == "Paciente") {
             
             include "modulos/menuPaciente.php";
+        }elseif($_SESSION["rol"] == "Doctor") {
+            
+            include "modulos/menuDoctor.php";
         }
 
 
@@ -84,7 +87,8 @@ session_start();
             || $url[0] == "perfil-S" || $url[0] == "consultorios" || $url[0] == "E-C"
             || $url[0] == "doctores"|| $url[0] == "pacientes" || $url[0] == "perfil-Paciente"
             || $url[0] == "perfil-P"|| $url[0] == "Ver-consultorios" 
-            || $url[0]=="Doctor"|| $url[0]=="historial") {
+            || $url[0]=="Doctor"|| $url[0]=="historial" || $url[0]=="perfil-Doctor"  
+            || $url[0]=="perfil-D" || $url[0]=="Citas") {
                 
                 include "modulos/" . $url[0] . ".php";
 
@@ -108,6 +112,10 @@ session_start();
             }else if($_GET["url"]=="ingreso-Paciente"){
                 
                 include "modulos/ingreso-Paciente.php";
+                
+            }else if($_GET["url"]=="ingreso-Doctor"){
+                
+                include "modulos/ingreso-Doctor.php";
                 
             }
         }else{
@@ -159,18 +167,18 @@ session_start();
     $(document).ready(function() {
         $('.sidebar-menu').tree()
     })
-     //Date for the calendar events (dummy data)
-     var date = new Date()
-    var d    = date.getDate(),
-        m    = date.getMonth(),
-        y    = date.getFullYear()
+    //Date for the calendar events (dummy data)
+    var date = new Date()
+    var d = date.getDate();
+    var m = date.getMonth();
+    var y = date.getFullYear();
 
-        $("#calendar").fullCalendar({
+    $("#calendar").fullCalendar({
 
-            hiddenDays: [0,6],
-            defaultView: 'agendaWeek',
-            events:[
-                <?php 
+        hiddenDays: [0, 6],
+        defaultView: 'agendaWeek',
+        events: [
+            <?php 
                 $resultado = CitasC::VerCitasC();
 
                 foreach ($resultado as $key => $value) {
@@ -182,44 +190,84 @@ session_start();
                             start:"'.$value["inicio"].'",
                             end:"'.$value["fin"].'"
                         }';
+                    }elseif ($value["id_doctor"] == substr($_GET["url"], 6)) {
+                        echo '{
+                            id:'.$value["id"].',
+                            title:"'.$value["nyaP"].'",
+                            start:"'.$value["inicio"].'",
+                            end:"'.$value["fin"].'"
+                        }';
                     }
                 }
 
                 ?>
-            ],
+        ],
+        <?php 
 
-            dayClick:function(date,jsEvent,view){
-                $('#CitaModal').modal();
-                var fecha = date.format();
-                var hora2 = ("01:00:00").split("-");
+if ($_SESSION["rol"] == "Paciente") {
+    
+    $columna = "id";
+    $valor = substr($_GET["url"],7);
 
-                fecha = fecha.split("T");
+    $resultado = DoctoresC::DoctorC($columna,$valor);
 
-                var dia = fecha[0];
-
-                var hora = (fecha[1].split(":"));
-
-                //Capturar la hora que se muestra
-                var hora_horaEntera = parseFloat(hora[0]);
-                //Capturar los minutos de las horas que se muestra
-                var hora_minutos = parseFloat(hora2[0]);
-
-                var hora_final = hora_horaEntera+hora_minutos;
+    echo '
+        scrollTime: "'.$resultado["horarioE"].'",
+        minTime: "'.$resultado["horarioE"].'",
+        maxTime: "'.$resultado["horarioS"].'" 
+        ';
 
 
-                //Imprimir la fecha  en un input con el id = fechaC
-                $("#fechaC").val(dia);
+}elseif ($_SESSION["rol"] == "Doctor") {
+    
+    $columna = "id";
+    $valor = substr($_GET["url"],6);
 
-                //Imprimir la hora en un input con el id = horaC
-                $("#horaC").val(hora_horaEntera+":00:00");
+    $resultado = DoctoresC::DoctorC($columna,$valor);
 
-                $('#fyhIC').val(fecha[0]+" "+hora_horaEntera+":00:00");
+    echo '
+        scrollTime: " '.$resultado["horarioE"].'",
+        minTime: " '.$resultado["horarioE"].'",
+        maxTime: "'.$resultado["horarioS"].'"
+        ';
+    
+}
 
-                $('#fyhFC').val(fecha[0]+" "+hora_final+":00:00");
-                
-            }
+?>,
 
-        })
+
+        dayClick: function(date, jsEvent, view) {
+            $('#CitaModal').modal();
+            var fecha = date.format();
+            var hora2 = ("01:00:00").split("-");
+
+            fecha = fecha.split("T");
+
+            var dia = fecha[0];
+
+            var hora = (fecha[1].split(":"));
+
+            //Capturar la hora que se muestra
+            var hora_horaEntera = parseFloat(hora[0]);
+            //Capturar los minutos de las horas que se muestra
+            var hora_minutos = parseFloat(hora2[0]);
+
+            var hora_final = hora_horaEntera + hora_minutos;
+
+
+            //Imprimir la fecha  en un input con el id = fechaC
+            $("#fechaC").val(dia);
+
+            //Imprimir la hora en un input con el id = horaC
+            $("#horaC").val(hora_horaEntera + ":00:00");
+
+            $('#fyhIC').val(fecha[0] + " " + hora_horaEntera + ":00:00");
+
+            $('#fyhFC').val(fecha[0] + " " + hora_final + ":00:00");
+
+        }
+
+    })
     </script>
 </body>
 

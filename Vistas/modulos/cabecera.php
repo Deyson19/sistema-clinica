@@ -1,6 +1,6 @@
 <header class="main-header">
     <!-- Logo -->
-    <a href="Vistas/index2.html" class="logo">
+    <a href="inicio" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>C M</b></span>
       <!-- logo for regular state and mobile devices -->
@@ -40,7 +40,9 @@
 
                 <?php
 
-                echo '<a href="http://localhost/clinica/perfil-'.$_SESSION["rol"].'" class="btn btn-success btn-flat">Perfil</a>'
+                $rol_actual = ucfirst($_SESSION["rol"]);
+
+                echo '<a href="http://localhost/clinica/perfil-'.$rol_actual.'" class="btn btn-success btn-flat">Perfil</a>';
 
                 ?>
 
